@@ -4,6 +4,7 @@ from langchain.schema.document import Document
 from langchain_ollama import OllamaEmbeddings
 import os
 import logging
+import shutil
 
 logger = logging.getLogger(__name__)
 
@@ -43,7 +44,7 @@ def get_embedding_function():
         logger.info(f'Embedding Function failed to load!')
     return embedding
 
-def load_documents():
+def load_documents(data_dir: str):
     """Function to load the documents from the datapath
     
     Args:
@@ -59,6 +60,11 @@ def load_documents():
         logger.info(f'DATA: {DATA_DIR} does not exist')
         os.mkdir(DATA_DIR)
         logger.info(f'DATA: {DATA_DIR} created successfully!')
+    if((data_dir is not None) and (data_dir != '') and (data_dir != DATA_DIR)):
+        if(os.path.exists(data_dir)):
+            pdf_files = [file for file in os.listdir(data_dir) if file.endswith('.pdf')]
+            for file in pdf_files:
+                shutil.copy(os.path.join(data_dir, file), os.path.join(DATA_DIR, file))
     document_loader = PyPDFDirectoryLoader(DATA_DIR)
     return document_loader.load()
 

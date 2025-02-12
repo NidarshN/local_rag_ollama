@@ -106,7 +106,7 @@ def clear_database():
         shutil.rmtree(DB_DIR)
         logger.info("Purged Database successfully!")
 
-def populate_database():
+def populate_database(data_dir: str):
     """Function to populate the database with the documents present in the DATA_DIR
     
     Args:
@@ -117,7 +117,7 @@ def populate_database():
     ========
     None
     """
-    documents = load_documents()
+    documents = load_documents(data_dir)
     documents = split_documents(documents)
     add_rag_documents(documents)
     logger.info("Database populated successfully!")

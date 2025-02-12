@@ -15,4 +15,4 @@ chroma
 .DS_Store
 backup
 logs/
-data/
+data/.*

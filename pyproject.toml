@@ -1,7 +1,7 @@
 [project]
 name = "local-rag-ollama"
 version = "0.1.0"
-description = "Local Retrieval-Augmented Generation using ollama"
+description = "Local Retrieval-Augmented Generation using Ollama"
 readme = "README.md"
 requires-python = ">=3.11"
 dependencies = [

@@ -26,7 +26,7 @@ def rag_query(query_text: str):
     prompt_template = ChatPromptTemplate.from_template(PROMPT_TEMPLATE)
     prompt = prompt_template.format(context=context_text, question=query_text)
 
-    model = OllamaLLM(model="qwen2.5:1.5b")
+    model = OllamaLLM(model=os.get_env("BASE_MODEL"))
     response_text = model.invoke(input=prompt)
 
     sources = [doc.metadata.get("id", None) for doc, _score in results]
@@ -43,16 +43,17 @@ def main():
     parser = argparse.ArgumentParser(
         description="Local Retrieval Augmented Generation (RAG) using ollama"
     )
-    parser.add_argument("--query_text", required=False, type=str, help="Query Text")
+    parser.add_argument("--query-text", required=False, type=str, help="Query Text")
     parser.add_argument("--reset", action="store_true", required=False, help="Reset Database")
     parser.add_argument("--populate", action="store_true", required=False, help="Populate Database")
+    parser.add_argument("--data-path", required=False, default=os.getenv("DATA_DIR"), type=str, help="Path to the diretory of the PDF documents to be processed. Default is './data/' directory")
     args = parser.parse_args()
     if(args.query_text):
         rag_query(args.query_text)
     elif(args.reset):
         clear_database()
     elif(args.populate):
-        populate_database()
+        populate_database(data_dir=args.data_path)
     else:
         parser.print_help()
 
